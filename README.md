@@ -16,7 +16,7 @@ https://github.com/Qsgs-Fans/FreeKill
 
 ## 如何联机？
 
-# 大致原理： 内网穿透
+### 大致原理： 内网穿透
 
 我们使用了两种实现内网穿透的工具： FRP（Fast Reverse Proxy，https://github.com/fatedier/frp）和ZeroTier（https://www.zerotier.com/）。
 
@@ -30,7 +30,7 @@ https://cloud.tencent.com/developer/news/247131
 
 
 
-# FRP 使用方法
+### FRP 使用方法
 
 0. 云服务器IPv4： 3.237.189.14. 本地OS： Windows。 确保云服务器上的FRPS和某本地机器FRPC正常运行即可。
 1. 下载此repo到本地，可以git clone、下载zip等。
@@ -41,7 +41,7 @@ https://cloud.tencent.com/developer/news/247131
 6. 加入服务器，就可进入游戏大厅。可以开玩了！
 
 
-# ZeroTier使用方法
+### ZeroTier使用方法
 
 0. 下载并安装zerotier（https://www.zerotier.com/）。右下角找到图标并点击“Join New Network”并输入16位Network ID。
 1. 找ZeroTier管理者要IPv4地址。
