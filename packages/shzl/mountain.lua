@@ -282,7 +282,7 @@ local xiangle = fk.CreateTriggerSkill{
 }
 local fangquan = fk.CreateTriggerSkill{
   name = "fangquan",
-  anim_type = "offensive",
+  anim_type = "support",
   events = {fk.EventPhaseChanging},
   can_trigger = function(self, event, target, player, data)
     return target == player and player:hasSkill(self.name) and data.to == Player.Play

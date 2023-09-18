@@ -96,7 +96,7 @@ local yicong_audio = fk.CreateTriggerSkill{
 
   refresh_events = {fk.HpChanged},
   can_refresh = function(self, event, target, player, data)
-    return target == player and player:hasSkill("yicong")
+    return target == player and player:hasSkill("yicong") and not player:isFakeSkill("yicong")
   end,
   on_refresh = function(self, event, target, player, data)
     local room = player.room
@@ -2524,6 +2524,14 @@ Fk:loadTranslationTable{
   ["~sunluyu"] = "姐姐，你且好自为之……",
 }
 
+local getKingdom = function(player)
+  local ret = player.kingdom
+  if ret == "wild" then
+    ret = player.role
+  end
+  return ret
+end
+
 local nos__maliang = General(extension, "nos__maliang", "shu", 3)
 local xiemu = fk.CreateActiveSkill{
   name = "xiemu",
@@ -2539,9 +2547,16 @@ local xiemu = fk.CreateActiveSkill{
   on_use = function(self, room, effect)
     local player = room:getPlayerById(effect.from)
     room:throwCard(effect.cards, self.name, player, player)
-    local kingdom = room:askForChoice(player, {"wei", "shu", "wu", "qun"}, self.name)
+    local choices = {}
+    for _, p in ipairs(room.alive_players) do
+      local kingdom = getKingdom(p)
+      if kingdom ~= "unknown" then
+        table.insertIfNeed(choices, kingdom)
+      end
+    end
+    local kingdom = room:askForChoice(player, choices, self.name)
     room:setPlayerMark(player, "@xiemu", kingdom)
-   end
+  end
 }
 local xiemu_record = fk.CreateTriggerSkill{
   name = "#xiemu_record",
@@ -2549,7 +2564,7 @@ local xiemu_record = fk.CreateTriggerSkill{
   events = {fk.TargetConfirmed},
   can_trigger = function(self, event, target, player, data)
     return target == player and not player.dead and player:getMark("@xiemu") ~= 0 and
-      data.from ~= player.id and player.room:getPlayerById(data.from).kingdom == player:getMark("@xiemu") and
+      data.from ~= player.id and getKingdom(player.room:getPlayerById(data.from)) == player:getMark("@xiemu") and
       data.card.color == Card.Black
   end,
   on_use = function(self, event, target, player, data)
